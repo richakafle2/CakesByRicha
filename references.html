@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reference Photos · Cakes by Richa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true">✿</span>Cakes <em>by</em> Richa</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+      <nav class="site-nav" id="nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="references.html">Reference photos</a>
+        <a href="#contact">Contact</a>
+        <a class="btn small" href="order.html">Order a cake <span class="badge" data-clip-count hidden>0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Reference gallery</p>
+      <h1 style="font-size:clamp(2.2rem,5vw,3.4rem)">Find your <em class="flourish">inspiration</em></h1>
+      <p class="muted" style="max-width:56ch">Clip the cakes you like. Clipped codes are added to your order form automatically for this browsing session — or jot the code down and type it in later.</p>
+    </div>
+
+    <div class="toolbar" role="toolbar" aria-label="Filter references">
+      <div id="filters" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      <input class="search" id="search" type="search" placeholder="Search by code or style…" aria-label="Search references">
+    </div>
+
+    <div class="gallery" id="gallery" aria-live="polite"></div>
+  </main>
+
+  <div class="tray" id="tray" role="region" aria-label="Clipped references">
+    <span><strong data-clip-count>0</strong> clipped</span>
+    <span class="codes" id="tray-codes"></span>
+    <button class="link" id="tray-clear" type="button">Clear</button>
+    <a class="btn saffron small" href="order.html">Use in order →</a>
+  </div>
+
+  <footer id="site-footer"></footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/references-data.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+  (function () {
+    const refs = window.CBR_REFERENCES || [];
+    const gallery = document.getElementById("gallery");
+    const filters = document.getElementById("filters");
+    const search = document.getElementById("search");
+    let activeCat = "All";
+
+    const cats = ["All", ...new Set(refs.map((r) => r.category).filter(Boolean))];
+    filters.innerHTML = cats.map((c) =>
+      `<button class="chip-filter" type="button" data-cat="${c}" aria-pressed="${c === "All"}">${c}</button>`).join("");
+    filters.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-cat]"); if (!b) return;
+      activeCat = b.dataset.cat;
+      filters.querySelectorAll("[data-cat]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+      render();
+    });
+    search.addEventListener("input", render);
+
+    function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m])); }
+
+    function render() {
+      const q = search.value.trim().toLowerCase();
+      const list = refs.filter((r) =>
+        (activeCat === "All" || r.category === activeCat) &&
+        (!q || [r.code, r.title, r.category, r.notes].join(" ").toLowerCase().includes(q)));
+      if (!list.length) { gallery.innerHTML = `<p class="muted">No matches — try another search.</p>`; return; }
+      gallery.innerHTML = list.map((r) => {
+        const on = CBRClips.has(r.code);
+        return `
+        <article class="ref-card ${on ? "clipped" : ""}" data-code="${esc(r.code)}">
+          <figure>
+            <img src="${esc(r.image)}" alt="${esc(r.title)}" loading="lazy">
+            <span class="ref-code">${esc(r.code)}</span>
+          </figure>
+          <div class="ref-body">
+            <h3>${esc(r.title)}</h3>
+            <p class="muted">${esc(r.notes)}</p>
+            <div class="ref-actions">
+              <button class="btn small clip-btn" type="button" data-clip aria-pressed="${on}">${on ? "✓ Clipped" : "+ Clip"}</button>
+              <button class="btn small ghost" type="button" data-copy title="Copy code">Copy</button>
+            </div>
+          </div>
+        </article>`;
+      }).join("");
+    }
+
+    gallery.addEventListener("click", async (e) => {
+      const card = e.target.closest(".ref-card"); if (!card) return;
+      const code = card.dataset.code;
+      if (e.target.closest("[data-clip]")) { CBRClips.toggle(code); }
+      if (e.target.closest("[data-copy]")) {
+        const btn = e.target.closest("[data-copy]");
+        try { await navigator.clipboard.writeText(code); btn.textContent = "Copied!"; }
+        catch (_) { btn.textContent = code; }
+        setTimeout(() => (btn.textContent = "Copy"), 1400);
+      }
+    });
+
+    const tray = document.getElementById("tray");
+    function updateTray() {
+      const all = CBRClips.all();
+      tray.classList.toggle("show", all.length > 0);
+      document.getElementById("tray-codes").textContent = all.join(", ");
+    }
+    document.getElementById("tray-clear").addEventListener("click", () => CBRClips.clear());
+    document.addEventListener("clips:changed", () => { render(); updateTray(); });
+
+    render(); updateTray();
+  })();
+  </script>
+</body>
+</html>

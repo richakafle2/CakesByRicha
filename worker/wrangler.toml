@@ -1,0 +1,18 @@
+name = "cakes-by-richa-ai"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+# Your site's origin(s), comma-separated. Include localhost while testing.
+ALLOWED_ORIGINS = "https://cakebyrichaorderform.com,http://localhost:8000"
+# gpt-image-2 = best quality; gpt-image-1-mini = cheapest
+IMAGE_MODEL = "gpt-image-2"
+IMAGE_QUALITY = "medium"
+
+# Per-IP limit: 5 previews per minute. Delete this block if wrangler complains.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+  [ratelimits.simple]
+  limit = 5
+  period = 60
