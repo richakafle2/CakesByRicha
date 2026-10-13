@@ -28,110 +28,28 @@
     <div class="page-head">
       <p class="eyebrow">Order request</p>
       <h1 style="font-size:clamp(2.2rem,5vw,3.4rem)">Let's design your <em class="flourish">cake</em></h1>
-      <p class="muted" style="max-width:60ch">Fill this out and I'll reply within 48 hours with pricing and availability. Please order at least one week before your event. Nothing is charged until we confirm together.</p>
+      <p class="muted" style="max-width:60ch">Orders are taken through a short Google Form. I'll reply within 48 hours with pricing and availability. Please order at least one week before your event — nothing is charged until we confirm together.</p>
     </div>
 
     <div class="order-layout" style="margin-top:28px">
-      <form class="card" id="order-form" method="POST" enctype="multipart/form-data" novalidate>
-        <!-- FormSubmit settings (action is set from js/config.js) -->
-        <input type="hidden" name="_subject" value="New cake order request">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="true">
-        <input type="hidden" name="_next" id="next-url">
-        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-        <input type="hidden" name="Reference codes" id="ref-codes-hidden">
-        <input type="hidden" name="AI design prompt" id="ai-prompt-hidden">
+      <div class="card">
+        <section aria-labelledby="refs-h" style="margin-bottom:32px">
+          <h2 id="refs-h" style="font-size:1.45rem">1. Your reference photos</h2>
+          <p class="muted" style="font-size:.95rem;margin-bottom:14px">Codes you clipped on the <a href="references.html">reference page</a> show here and are filled into the order form for you. You can also type a code in.</p>
+          <div class="code-entry">
+            <input id="code-input" type="text" placeholder="REF-004" aria-label="Add a reference code">
+            <button class="btn small ghost" type="button" id="code-add">Add</button>
+          </div>
+          <div class="ref-chips" id="ref-chips"></div>
+          <div class="submit-row" style="margin-top:14px">
+            <button class="btn small ghost" type="button" id="copy-codes" hidden>Copy codes</button>
+          </div>
+        </section>
 
-        <fieldset>
-          <legend>About you</legend>
-          <div class="grid-2">
-            <div class="field"><label for="name">Full name <span class="req">*</span></label><input id="name" name="Name" type="text" autocomplete="name" required></div>
-            <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email" required></div>
-            <div class="field"><label for="phone">Phone</label><input id="phone" name="Phone" type="tel" autocomplete="tel"></div>
-            <div class="field">
-              <span class="label">Preferred contact</span>
-              <div class="pill-group">
-                <label><input type="radio" name="Preferred contact" value="Email" checked><span>Email</span></label>
-                <label><input type="radio" name="Preferred contact" value="Text"><span>Text</span></label>
-                <label><input type="radio" name="Preferred contact" value="Call"><span>Call</span></label>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Your event</legend>
-          <div class="grid-2">
-            <div class="field"><label for="date">Date needed <span class="req">*</span></label><input id="date" name="Date needed" type="date" required><span class="hint">At least 7 days from today.</span></div>
-            <div class="field">
-              <label for="occasion">Occasion</label>
-              <select id="occasion" name="Occasion">
-                <option value="">Choose one…</option>
-                <option>Birthday</option><option>Wedding</option><option>Engagement</option>
-                <option>Baby shower</option><option>Graduation</option><option>Anniversary</option>
-                <option>Diwali / Dashain / festival</option><option>Just because</option><option>Other</option>
-              </select>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>The cake</legend>
-          <div class="field">
-            <span class="label">Type <span class="req">*</span></span>
-            <div class="pill-group" id="type-group">
-              <label><input type="radio" name="Cake type" value="Round cake" checked><span>Round cake</span></label>
-              <label><input type="radio" name="Cake type" value="Tiered cake"><span>Tiered cake</span></label>
-              <label><input type="radio" name="Cake type" value="Sheet cake"><span>Sheet cake</span></label>
-              <label><input type="radio" name="Cake type" value="Cheesecake"><span>Cheesecake</span></label>
-              <label><input type="radio" name="Cake type" value="Bento / mini"><span>Bento / mini</span></label>
-              <label><input type="radio" name="Cake type" value="Cupcakes"><span>Cupcakes</span></label>
-            </div>
-          </div>
-          <div class="grid-2">
-            <div class="field"><label for="servings">Servings needed <span class="req">*</span></label><input id="servings" name="Servings" type="number" min="1" placeholder="e.g. 25" required></div>
-            <div class="field">
-              <label for="flavor">Flavor</label>
-              <select id="flavor" name="Flavor">
-                <option>Vanilla bean</option><option>Chocolate fudge</option><option>Red velvet</option>
-                <option>Gulab jamun</option><option>Ras malai</option><option>Mango</option>
-                <option>Pistachio cardamom</option><option>Funfetti</option><option>Other (describe below)</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="frosting">Frosting</label>
-              <select id="frosting" name="Frosting">
-                <option>Buttercream</option><option>Whipped cream</option><option>Cream cheese</option>
-                <option>Chocolate ganache</option><option>Not sure — your call</option>
-              </select>
-            </div>
-            <div class="field"><label for="colors">Colors / theme</label><input id="colors" name="Colors / theme" type="text" placeholder="e.g. blush pink & gold, florals"></div>
-          </div>
-          <div class="field"><label for="message">Writing on the cake</label><input id="message" name="Message on cake" type="text" maxlength="60" placeholder="e.g. Happy 30th, Priya!"></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Reference photos</legend>
-          <div class="field">
-            <label for="code-input">Reference codes</label>
-            <div class="code-entry">
-              <input id="code-input" type="text" placeholder="REF-004" aria-describedby="code-hint">
-              <button class="btn small ghost" type="button" id="code-add">Add</button>
-            </div>
-            <span class="hint" id="code-hint">Codes you clipped on the <a href="references.html">reference page</a> appear here automatically.</span>
-            <div class="ref-chips" id="ref-chips"></div>
-          </div>
-          <div class="field">
-            <label for="inspiration">Your own inspiration photo <span class="hint">(optional, under 5&nbsp;MB)</span></label>
-            <input id="inspiration" name="attachment" type="file" accept="image/*">
-          </div>
-        </fieldset>
-
-        <fieldset id="ai-section" hidden>
-          <legend>AI design preview <span class="hint" style="font-family:var(--body);font-size:.85rem">· beta</span></legend>
+        <section id="ai-section" aria-labelledby="ai-h" style="margin-bottom:32px" hidden>
+          <h2 id="ai-h" style="font-size:1.45rem">2. Preview your design <span class="hint" style="font-family:var(--body);font-size:.85rem">· optional, beta</span></h2>
           <div class="ai-box">
-            <h3>✨ See it before it's baked</h3>
-            <p class="muted" style="font-size:.95rem">Describe your dream cake. The preview blends your words with your reference photos and the details above. It's a mock-up for inspiration — the real cake is hand-decorated and may differ.</p>
+            <p class="muted" style="font-size:.95rem">Describe your dream cake. The preview blends your words with your clipped reference photos. It's a mock-up for inspiration — the real cake is hand-decorated and may differ. Download it and upload it in the order form if you'd like to include it.</p>
             <div class="field" style="margin-top:14px">
               <label for="ai-prompt">Describe the design</label>
               <textarea id="ai-prompt" placeholder="Two tiers, the rosettes from REF-001 on the bottom tier, gold drip on top, fresh marigolds cascading down one side…"></textarea>
@@ -144,37 +62,28 @@
             <div class="ai-result" id="ai-result" hidden>
               <img id="ai-img" alt="AI-generated cake design preview">
               <div class="submit-row">
-                <button class="btn small" type="button" id="ai-attach">Attach this design to my order</button>
-                <a class="btn small ghost" id="ai-download" download="cake-design.png">Download</a>
-                <span class="attached-flag" id="ai-attached" hidden>✓ Attached</span>
+                <a class="btn small" id="ai-download" download="cake-design.png">Download design</a>
               </div>
             </div>
-            <input type="file" name="attachment_ai_design" id="ai-file" hidden>
           </div>
-        </fieldset>
+        </section>
 
-        <fieldset>
-          <legend>Anything else?</legend>
-          <div class="field"><label for="allergies">Allergies or dietary needs</label><input id="allergies" name="Allergies / dietary" type="text" placeholder="e.g. nut-free, eggless"></div>
-          <div class="field"><label for="budget">Budget range</label>
-            <select id="budget" name="Budget">
-              <option value="">Prefer not to say</option><option>Under $75</option><option>$75 – $150</option>
-              <option>$150 – $300</option><option>$300+</option>
-            </select>
-          </div>
-          <div class="field"><label for="notes">Notes</label><textarea id="notes" name="Notes" placeholder="Anything I should know?"></textarea></div>
-        </fieldset>
+        <section aria-labelledby="form-h">
+          <h2 id="form-h" style="font-size:1.45rem"><span id="form-step">3</span>. Fill out the order form</h2>
+          <p class="muted" style="font-size:.95rem;margin-bottom:18px">The form opens in a new tab, so you can come back here anytime.</p>
+          <a class="btn" id="form-link" href="#" target="_blank" rel="noopener">Open the order form ↗</a>
+          <p class="ai-status err" id="form-missing" hidden>The order form link hasn't been set up yet — please reach out using the contact info below.</p>
+        </section>
+      </div>
 
-        <div class="submit-row">
-          <button class="btn" type="submit">Send order request</button>
-          <span class="hint">You'll get a confirmation once I review it.</span>
-        </div>
-        <p class="ai-status err" id="form-error" role="alert"></p>
-      </form>
-
-      <aside class="card summary" aria-label="Order summary">
-        <h3>Your request</h3>
-        <dl id="summary"></dl>
+      <aside class="card summary" aria-label="Before you order">
+        <h3>Good to know</h3>
+        <ul class="muted" style="padding-left:18px;font-size:.92rem;display:grid;gap:8px;margin:0">
+          <li>Order at least 7 days ahead.</li>
+          <li>Pickup only in San Diego.</li>
+          <li>Flavors include vanilla, chocolate, red velvet, gulab jamun, ras malai, mango and pistachio cardamom.</li>
+          <li>Allergies? Mention them in the form.</li>
+        </ul>
         <p class="muted" style="font-size:.85rem;margin-top:18px">Questions first? Reach me through the <a href="#contact">contact info</a> below.</p>
       </aside>
     </div>

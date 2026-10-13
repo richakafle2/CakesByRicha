@@ -8,17 +8,19 @@ window.CBR_CONFIG = {
   // ---- Contact footer -------------------------------------
   contact: {
     email: "cakesbyricha1@gmail.com",          // <- your business email
-    phone: "(972) 900 - 2932",             // <- your phone / text number ("" to hide)
+    phone: "(972) 900-2932",             // <- your phone / text number ("" to hide)
     instagram: "cakes_by_richa1",           // <- handle without @ ("" to hide)
     location: "San Diego, CA · pickup only"
   },
 
-  // ---- Order form -----------------------------------------
-  // FormSubmit sends each order to this inbox. The first time someone
-  // submits, FormSubmit emails you a one-time "activate" link.
-  formsubmitEmail: "hello@example.com",
-  // Where FormSubmit sends people after they submit:
-  thankYouUrl: "https://cakebyrichaorderform.com/thanks.html",
+  // ---- Google Form ----------------------------------------
+  // Paste your Google Form link here.
+  // To have clipped reference codes filled in automatically, use a
+  // PRE-FILLED link instead (see README): in Google Forms, ⋮ menu →
+  // "Get pre-filled link", type REF-TEST in your "Reference codes"
+  // question, click "Get link", copy it, and paste it below.
+  // The site swaps REF-TEST for the customer's clipped codes.
+  googleFormLink: "https://forms.gle/m72fiRgSCfuDJ3rS8",
 
   // ---- AI design preview ----------------------------------
   // URL of your deployed Cloudflare Worker (see worker/README.md).

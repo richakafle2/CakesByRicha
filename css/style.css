@@ -210,3 +210,5 @@ footer a { color: var(--cream); }
 .code-entry { align-items: stretch; }
 .code-entry .btn { border-radius: 12px; padding-inline: 18px; }
 input[type=file] { font: inherit; font-size: .9rem; }
+
+[hidden] { display: none !important; }
