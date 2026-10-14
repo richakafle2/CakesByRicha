@@ -3,13 +3,13 @@
    Edit the values below; every page reads from here.
    ========================================================== */
 window.CBR_CONFIG = {
-  businessName: "Cakes by Richa",
+  businessName: "Sweets by Richa",
 
   // ---- Contact footer -------------------------------------
   contact: {
     email: "cakesbyricha1@gmail.com",          // <- your business email
     phone: "(972) 900-2932",             // <- your phone / text number ("" to hide)
-    instagram: "cakes_by_richa1",           // <- handle without @ ("" to hide)
+    instagram: "sweets_by_richa1",           // <- handle without @ ("" to hide)
     location: "San Diego, CA · pickup only"
   },
 
@@ -20,7 +20,7 @@ window.CBR_CONFIG = {
   // "Get pre-filled link", type REF-TEST in your "Reference codes"
   // question, click "Get link", copy it, and paste it below.
   // The site swaps REF-TEST for the customer's clipped codes.
-  googleFormLink: "https://forms.gle/m72fiRgSCfuDJ3rS8",
+  googleFormLink: "cash.app/$sweetsbyricha",
 
   // ---- AI design preview ----------------------------------
   // URL of your deployed Cloudflare Worker (see worker/README.md).

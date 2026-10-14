@@ -1,0 +1,47 @@
+/* Sweets Catalog styles — swap the variables to match your site */
+#catalog {
+  --cat-accent: #c76b8a;
+  --cat-text: #3b2a2a;
+  --cat-muted: #7a6464;
+  --cat-card: #fffaf7;
+  --cat-border: #eadbd4;
+  color: var(--cat-text);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+.cat-header { text-align: center; margin: 32px 0 16px; }
+.cat-month { color: var(--cat-accent); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; }
+.cat-nav { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.cat-nav a { border: 1px solid var(--cat-accent); color: var(--cat-accent); padding: 6px 14px; border-radius: 999px; text-decoration: none; }
+.cat-nav a:hover { background: var(--cat-accent); color: #fff; }
+
+.cat-section { margin-top: 40px; scroll-margin-top: 16px; }
+.cat-section > h3 { font-size: 1.6rem; border-bottom: 2px solid var(--cat-border); padding-bottom: 6px; }
+.cat-sub-title { color: var(--cat-muted); font-size: 1.15rem; margin: 24px 0 12px; }
+
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.cat-card { background: var(--cat-card); border: 1px solid var(--cat-border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+.cat-img-wrap { position: relative; aspect-ratio: 1 / 1; background: var(--cat-border); }
+.cat-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cat-noimg::after { content: "Photo coming soon"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--cat-muted); font-size: .9rem; }
+.cat-badge { position: absolute; top: 10px; left: 10px; background: var(--cat-accent); color: #fff; font-size: .75rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+.cat-badge-inline { position: static; display: inline-block; margin-bottom: 8px; }
+.cat-body { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.cat-body h4 { margin: 0; font-size: 1.05rem; }
+.cat-notes { color: var(--cat-muted); margin: 0; font-size: .92rem; }
+.cat-foot { margin-top: auto; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.cat-code { font-family: monospace; font-size: .85rem; color: var(--cat-muted); }
+.cat-more, .cat-copy { background: var(--cat-accent); color: #fff; border: 0; border-radius: 6px; padding: 8px 12px; font-weight: 600; cursor: pointer; font-size: .8rem; letter-spacing: .04em; }
+.cat-more:hover, .cat-copy:hover { filter: brightness(.92); }
+.cat-empty { color: var(--cat-muted); font-style: italic; }
+
+.cat-dialog { border: 0; border-radius: 14px; padding: 24px; max-width: 460px; width: calc(100% - 32px); max-height: 85vh; overflow-y: auto; color: var(--cat-text); }
+.cat-dialog::backdrop { background: rgba(40, 25, 25, .55); }
+.cat-dialog h3 { margin: 4px 0 6px; }
+.cat-dialog h4 { margin: 18px 0 6px; font-size: .95rem; text-transform: uppercase; letter-spacing: .05em; color: var(--cat-accent); }
+.cat-dialog ul { margin: 0; padding-left: 20px; }
+.cat-dialog-img { width: 100%; border-radius: 10px; aspect-ratio: 4 / 3; object-fit: cover; }
+.cat-close { position: sticky; top: 0; float: right; background: none; border: 0; font-size: 1.8rem; line-height: 1; cursor: pointer; color: var(--cat-muted); }
+.cat-allergens { margin-top: 14px; font-size: .9rem; }
+.cat-ordercode { font-size: .9rem; color: var(--cat-muted); }

@@ -3,11 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reference Photos · Cakes by Richa</title>
+  <title>Sweets Catalog · Cakes by Richa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Catalog additions — layered on top of css/style.css */
+    .cat-section { margin-top: 2.5rem; scroll-margin-top: 90px; }
+    .cat-section > h2 { font-family: "Fraunces", serif; font-weight: 500; font-size: clamp(1.6rem, 3.5vw, 2.2rem); margin: 0 0 .25rem; }
+    .cat-sub > h3 { font-family: "DM Sans", sans-serif; font-weight: 600; font-size: 1.05rem; text-transform: uppercase; letter-spacing: .06em; opacity: .75; margin: 1.5rem 0 .75rem; }
+    .ref-card figure { position: relative; }
+    .ref-card figure.noimg { min-height: 220px; display: grid; place-items: center; background: rgba(0,0,0,.05); }
+    .ref-card figure.noimg::after { content: "Photo coming soon"; opacity: .6; font-size: .9rem; }
+    .limited-badge { position: absolute; top: 10px; right: 10px; background: #b8476b; color: #fff; font-size: .72rem; font-weight: 600; letter-spacing: .03em; padding: 4px 10px; border-radius: 999px; }
+    .catalog-month { display: inline-block; margin-top: .5rem; font-weight: 600; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+    .ref-actions { flex-wrap: wrap; }
+
+    .info-dialog { border: 0; border-radius: 16px; padding: 0; width: min(480px, calc(100% - 32px)); max-height: 88vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+    .info-dialog::backdrop { background: rgba(30, 20, 20, .55); }
+    .info-dialog img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+    .info-inner { padding: 20px 24px 24px; }
+    .info-inner h2 { font-family: "Fraunces", serif; font-weight: 500; margin: 0 0 .25rem; }
+    .info-inner h4 { margin: 1.25rem 0 .4rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+    .info-inner ul { margin: 0; padding-left: 1.2rem; line-height: 1.6; }
+    .info-inner .info-code { font-family: monospace; opacity: .7; font-size: .9rem; }
+    .info-allergens { margin-top: 1rem; font-size: .92rem; }
+    .info-close { position: sticky; top: 8px; float: right; margin: 8px 8px 0 0; width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(255,255,255,.9); font-size: 1.4rem; line-height: 1; cursor: pointer; z-index: 1; }
+    .info-actions { display: flex; gap: 8px; margin-top: 1.25rem; flex-wrap: wrap; }
+  </style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -17,29 +41,35 @@
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
       <nav class="site-nav" id="nav" aria-label="Main">
         <a href="index.html">Home</a>
-        <a href="references.html">Reference photos</a>
+        <a href="references.html">Sweets catalog</a>
         <a href="#contact">Contact</a>
-        <a class="btn small" href="order.html">Order a cake <span class="badge" data-clip-count hidden>0</span></a>
+        <a class="btn small" href="order.html">Order <span class="badge" data-clip-count hidden>0</span></a>
       </nav>
     </div>
   </header>
 
   <main id="main" class="wrap">
     <div class="page-head">
-      <p class="eyebrow">Reference gallery</p>
-      <h1 style="font-size:clamp(2.2rem,5vw,3.4rem)">Find your <em class="flourish">inspiration</em></h1>
-      <p class="muted" style="max-width:56ch">Clip the cakes you like. Clipped codes are added to your order form automatically for this browsing session — or jot the code down and type it in later.</p>
+      <p class="eyebrow">Sweets catalog</p>
+      <h1 style="font-size:clamp(2.2rem,5vw,3.4rem)">Window shop our <em class="flourish">assortment</em></h1>
+      <p class="muted" style="max-width:60ch">Updated monthly with limited-time desserts. See what everything looks like, then click <strong>More info</strong> for size options and exactly what goes into each dessert.</p>
+      <span class="catalog-month" id="catalog-month"></span>
     </div>
 
-    <div class="toolbar" role="toolbar" aria-label="Filter references">
+    <div class="toolbar" role="toolbar" aria-label="Filter catalog">
       <div id="filters" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-      <input class="search" id="search" type="search" placeholder="Search by code or style…" aria-label="Search references">
+      <input class="search" id="search" type="search" placeholder="Search by name, code or ingredient…" aria-label="Search catalog">
     </div>
 
-    <div class="gallery" id="gallery" aria-live="polite"></div>
+    <div id="catalog" aria-live="polite"></div>
   </main>
 
-  <div class="tray" id="tray" role="region" aria-label="Clipped references">
+  <dialog class="info-dialog" id="info-dialog" aria-labelledby="info-title">
+    <button class="info-close" type="button" data-close aria-label="Close">&times;</button>
+    <div id="info-body"></div>
+  </dialog>
+
+  <div class="tray" id="tray" role="region" aria-label="Clipped desserts">
     <span><strong data-clip-count>0</strong> clipped</span>
     <span class="codes" id="tray-codes"></span>
     <button class="link" id="tray-clear" type="button">Clear</button>
@@ -53,54 +83,132 @@
   <script src="js/common.js"></script>
   <script>
   (function () {
-    const refs = window.CBR_REFERENCES || [];
-    const gallery = document.getElementById("gallery");
+    const catalog = window.CBR_CATALOG || { categories: [] };
+    const root = document.getElementById("catalog");
     const filters = document.getElementById("filters");
     const search = document.getElementById("search");
-    let activeCat = "All";
+    const dialog = document.getElementById("info-dialog");
+    const infoBody = document.getElementById("info-body");
+    let activeFilter = "all";
 
-    const cats = ["All", ...new Set(refs.map((r) => r.category).filter(Boolean))];
-    filters.innerHTML = cats.map((c) =>
-      `<button class="chip-filter" type="button" data-cat="${c}" aria-pressed="${c === "All"}">${c}</button>`).join("");
+    function esc(s) { return String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
+
+    if (catalog.month) document.getElementById("catalog-month").textContent = catalog.month + " assortment";
+
+    // Normalize: every category becomes a list of groups ({ key, title, items }).
+    const byCode = {};
+    const sections = catalog.categories.map((cat) => {
+      const groups = cat.subsections
+        ? cat.subsections.map((s) => ({ key: cat.id + "-" + s.id, title: s.title, items: s.items || [] }))
+        : [{ key: cat.id, title: null, items: cat.items || [] }];
+      groups.forEach((g) => g.items.forEach((it) => { byCode[it.code] = it; }));
+      return { key: cat.id, title: cat.title, groups };
+    });
+
+    // Filter chips: All, each category, and each subsection.
+    const chips = [{ key: "all", label: "All" }];
+    sections.forEach((s) => {
+      chips.push({ key: s.key, label: s.title });
+      s.groups.forEach((g) => { if (g.title) chips.push({ key: g.key, label: g.title }); });
+    });
+    filters.innerHTML = chips.map((c) =>
+      `<button class="chip-filter" type="button" data-filter="${esc(c.key)}" aria-pressed="${c.key === "all"}">${esc(c.label)}</button>`).join("");
     filters.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-cat]"); if (!b) return;
-      activeCat = b.dataset.cat;
-      filters.querySelectorAll("[data-cat]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+      const b = e.target.closest("[data-filter]"); if (!b) return;
+      activeFilter = b.dataset.filter;
+      filters.querySelectorAll("[data-filter]").forEach((x) => x.setAttribute("aria-pressed", x === b));
       render();
     });
     search.addEventListener("input", render);
 
-    function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m])); }
+    function matches(item, q) {
+      if (item.hidden) return false;
+      if (!q) return true;
+      return [item.code, item.title, item.notes, ...(item.ingredients || []), ...(item.sizes || [])]
+        .join(" ").toLowerCase().includes(q);
+    }
 
-    function render() {
-      const q = search.value.trim().toLowerCase();
-      const list = refs.filter((r) =>
-        (activeCat === "All" || r.category === activeCat) &&
-        (!q || [r.code, r.title, r.category, r.notes].join(" ").toLowerCase().includes(q)));
-      if (!list.length) { gallery.innerHTML = `<p class="muted">No matches — try another search.</p>`; return; }
-      gallery.innerHTML = list.map((r) => {
-        const on = CBRClips.has(r.code);
-        return `
+    function card(r) {
+      const on = CBRClips.has(r.code);
+      return `
         <article class="ref-card ${on ? "clipped" : ""}" data-code="${esc(r.code)}">
           <figure>
-            <img src="${esc(r.image)}" alt="${esc(r.title)}" loading="lazy">
+            <img src="${esc(r.image)}" alt="${esc(r.title)}" loading="lazy" onerror="this.parentNode.classList.add('noimg');this.remove();">
             <span class="ref-code">${esc(r.code)}</span>
+            ${r.limited ? `<span class="limited-badge">Limited time</span>` : ""}
           </figure>
           <div class="ref-body">
             <h3>${esc(r.title)}</h3>
             <p class="muted">${esc(r.notes)}</p>
             <div class="ref-actions">
-              <button class="btn small clip-btn" type="button" data-clip aria-pressed="${on}">${on ? "✓ Clipped" : "+ Clip"}</button>
+              <button class="btn small" type="button" data-info>More info</button>
+              <button class="btn small ghost clip-btn" type="button" data-clip aria-pressed="${on}">${on ? "✓ Clipped" : "+ Clip"}</button>
               <button class="btn small ghost" type="button" data-copy title="Copy code">Copy</button>
             </div>
           </div>
         </article>`;
-      }).join("");
     }
 
-    gallery.addEventListener("click", async (e) => {
+    function render() {
+      const q = search.value.trim().toLowerCase();
+      let html = "";
+      sections.forEach((s) => {
+        const sectionOn = activeFilter === "all" || activeFilter === s.key;
+        let inner = "";
+        s.groups.forEach((g) => {
+          if (!sectionOn && activeFilter !== g.key) return;
+          const list = g.items.filter((it) => matches(it, q));
+          if (!list.length) return;
+          inner += `<div class="cat-sub">${g.title ? `<h3>${esc(g.title)}</h3>` : ""}
+                      <div class="gallery">${list.map(card).join("")}</div></div>`;
+        });
+        if (inner) html += `<section class="cat-section" id="${esc(s.key)}"><h2>${esc(s.title)}</h2>${inner}</section>`;
+      });
+      root.innerHTML = html || `<p class="muted">No matches — try another search.</p>`;
+    }
+
+    function list(arr) {
+      return arr && arr.length ? `<ul>${arr.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="muted">Ask us!</p>`;
+    }
+
+    function openInfo(code) {
+      const r = byCode[code]; if (!r) return;
+      const on = CBRClips.has(r.code);
+      infoBody.innerHTML = `
+        <img src="${esc(r.image)}" alt="${esc(r.title)}" onerror="this.remove()">
+        <div class="info-inner">
+          <h2 id="info-title">${esc(r.title)}</h2>
+          <span class="info-code">${esc(r.code)}</span>
+          ${r.limited ? ` · <strong>Limited time</strong>` : ""}
+          <p class="muted">${esc(r.notes)}</p>
+          <h4>Size options</h4>${list(r.sizes)}
+          <h4>Ingredients</h4>${list(r.ingredients)}
+          ${r.allergens && r.allergens.length ? `<p class="info-allergens"><strong>Contains:</strong> ${r.allergens.map(esc).join(", ")}</p>` : ""}
+          <div class="info-actions" data-code="${esc(r.code)}">
+            <button class="btn small" type="button" data-clip-info aria-pressed="${on}">${on ? "✓ Clipped" : "+ Clip for my order"}</button>
+            <button class="btn small ghost" type="button" data-close>Close</button>
+          </div>
+        </div>`;
+      if (dialog.showModal) dialog.showModal(); else dialog.setAttribute("open", "");
+    }
+    function closeInfo() { if (dialog.close) dialog.close(); else dialog.removeAttribute("open"); }
+
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog || e.target.closest("[data-close]")) return closeInfo();
+      const clip = e.target.closest("[data-clip-info]");
+      if (clip) {
+        const code = clip.closest("[data-code]").dataset.code;
+        CBRClips.toggle(code);
+        const on = CBRClips.has(code);
+        clip.setAttribute("aria-pressed", on);
+        clip.textContent = on ? "✓ Clipped" : "+ Clip for my order";
+      }
+    });
+
+    root.addEventListener("click", async (e) => {
       const card = e.target.closest(".ref-card"); if (!card) return;
       const code = card.dataset.code;
+      if (e.target.closest("[data-info]")) return openInfo(code);
       if (e.target.closest("[data-clip]")) { CBRClips.toggle(code); }
       if (e.target.closest("[data-copy]")) {
         const btn = e.target.closest("[data-copy]");

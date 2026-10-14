@@ -85,7 +85,7 @@ em.flourish { font-style: italic; color: var(--rose); }
 .hero-art { position: relative; aspect-ratio: 1; }
 .hero-art .plate { position: absolute; inset: 6%; border-radius: 50%; background: radial-gradient(circle at 50% 40%, var(--blush), #ecc4c0 70%); }
 .hero-art img { position: absolute; inset: 14%; width: 72%; height: 72%; object-fit: cover; border-radius: 50%; box-shadow: var(--shadow); }
-.hero-art .sticker { position: absolute; right: 0; bottom: 8%; background: var(--saffron); color: var(--cocoa); font-family: var(--display); font-style: italic; padding: 14px 18px; border-radius: 50%; width: 120px; height: 120px; display: grid; place-items: center; text-align: center; line-height: 1.15; transform: rotate(-10deg); box-shadow: var(--shadow); }
+.hero-art .sticker { position: absolute; right: 0; bottom: 8%; background: var(--saffron); color: var(--cocoa); font-family: var(--display); font-style: italic; padding: 14px 18px; border-radius: 100%; width: 140px; height: 140px; display: grid; place-items: center; text-align: center; line-height: 1.15; transform: rotate(-10deg); box-shadow: var(--shadow); }
 @media (max-width: 800px) { .hero-grid { grid-template-columns: 1fr; } .hero-art { max-width: 380px; margin: 0 auto; } }
 
 /* ---- Cards / grids ---- */
